@@ -19,30 +19,18 @@ from twilio.rest import Client
 import smtplib
 import requests
 from requests.exceptions import HTTPError
+import speech_recognition as sr
 
-text =   """  Good morning, Dr. Sharma!
-   Good morning! What’s wrong with you?
-    I have been suffering from fever since yesterday.
-   Do you have any other symptoms?
-    I also feel headache and shivering.
-   Let me take your temperature. At this time the fever is 102 degree. Don’t worry, there is nothing serious. I am giving you aspirin for pain, and you will be all right in couple of days.
-    Thank you, doctor.
-   But get your blood tested for malignant, and come with the report tomorrow.
-   maybe we have to perform biopsy and start chemotherapy.
-    OK doctor.
-   I shall recommend at least two days rest for you.
-    Would you prepare a medical certificate for me to submit it in my office?
-   Oh sure…………. You have to take aspirin.
-    Thank you very much. Please tell me how shall I take this medicine?
-   This medicine is for one day only. Take this dose as soon as you reach your home and the second at 3 pm and the third at night before sleeping.
-    What should I eat doctor?
-   You should eat only light food. You can take milk and fresh fruit also.
-    How much shall I pay you doctor?
-   You can pay consultation fee at the reception desk.
-     Thanks doctor. 
-   It’s all right.
-    Thank you doctor. I shall see you tomorrow with my blood report.
-"""
+#speech to text module
+rec = sr.Recognizer()
+audioFile = "audio file from the API"
+with sr.AudioFile(audioFile) as sourceFile:
+    audio = rec.record(sourceFile) 
+try:
+    text = rec.recognize_google(audio)
+except Exception as e:
+    print(e)    
+
 #preprocessing the data
 text = re.sub(r'\[[0-9]*\]',' ',text)
 text = re.sub(r'\s+',' ',text)
